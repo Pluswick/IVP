@@ -1,1 +1,0 @@
-# Team CatchMind's Workspace
