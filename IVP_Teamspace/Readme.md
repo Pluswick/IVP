@@ -1,7 +1,7 @@
 
 # 📦 Door-Box: AI 기반 주거 공간 방문자 분석 블랙박스 프로젝트 (CatchCAM 기반)
 
-> 웹캠 → CatchCAM NPU → 얼굴 검출 + 감정 분류 → 로컬 CPU → 성별/연령대 분류 → Slack 실시간 알림 & 저장장
+> 웹캠 → CatchCAM NPU → 얼굴 검출 + 감정 분류 → 로컬 CPU → 성별/연령대 분류 → Slack 실시간 알림 & 클립 저장
 
 ---
 
@@ -10,8 +10,9 @@
 - 얼굴 인식 (YOLOv5s, NPU)
 - 감정 분류 (FER+, MobileNetV2, NPU)
 - 성별/연령대 분류 (MobileNetV3, CPU)
-- Slack 실시간 알림림 전송
+- Slack 실시간 알림 전송 
 - 스마트폰 앱 or PC 응용 프로그램을 통한 로그 확인
+- Google Sheet & Slack API 사용용
 
 ---
 
@@ -21,7 +22,7 @@
 DoorBox_Project/
 ├─ models/
 │   └─ nef/
-│       └─ yolo_emotion_combined.nef   # 팀장 제공 예정
+│       └─ yolo_emotion_combined.nef    # Yolov5s + MobileNetV2 컴바인 모델.nef
 │   └─ pth/
 │       ├─ mobilenetv3_age.pth
 │       └─ mobilenetv3_gender.pth
@@ -75,7 +76,7 @@ python run_doorbox_live.py
 ## 알림 예시 (Slack)
 
 ```
-[DoorBox] (주의)방문자가 인식되었습니다.
+[Door-Box] (주의)방문자가 인식되었습니다.
 - 시각: 2025-06-06 16:30
 - 감정: anger
 - 성별: 여자
