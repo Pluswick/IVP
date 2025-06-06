@@ -22,7 +22,7 @@
 DoorBox_Project/
 ├─ models/
 │   └─ nef/
-│       └─ yolo_emotion_combined.nef    # Yolov5s + MobileNetV2 컴바인 모델.nef
+│       └─ combined.nef    # Yolov5s + MobileNetV2 컴바인 모델.nef
 │   └─ pth/
 │       ├─ mobilenetv3_age.pth
 │       └─ mobilenetv3_gender.pth
@@ -34,12 +34,12 @@ DoorBox_Project/
 
 ├─ inference/                           # 인퍼런스 관련 코드들
 │   ├─ run_inference.py                 # 메인 인퍼런스 파이프라인
-│   ├─ yolov5_face_detect.py            # 얼굴 검출 (NPU)
-│   ├─ cropper.py                       # 얼굴 crop
-│   ├─ emotion_infer.py                 # 감정 분류 (NPU)
-│   ├─ gender_age_infer.py              # 성별/연령 분류 (CPU)
-│   ├─ result_packager.py               # 감정+성별+연령 → result.json 저장
-│   └─ slack_trigger.py                 # result.json → Slack 전송
+│   ├─ 1_yolov5_face_detect.py            # 얼굴 검출 (NPU)
+│   ├─ 2_cropper.py                       # 얼굴 crop
+│   ├─ 3_emotion_infer.py                 # 감정 분류 (NPU)
+│   ├─ 4_gender_age_infer.py              # 성별/연령 분류 (CPU)
+│   ├─ 5_result_packager.py               # 감정+성별+연령 → result.json 저장
+│   └─ 6_slack_trigger.py                 # result.json → Slack 전송
 
 ├─ outputs/
 │   ├─ faces/                           # crop 저장
@@ -53,7 +53,7 @@ DoorBox_Project/
 │           └─ kp_firmware.tar
 
 ├─ run_doorbox.py                       # 실제 실행하는 통합 진입 파일
-├─ run_doorbox_live.py            # 실시간 UI 데모용 실행 파일 (분리 운영)
+├─ run_doorbox_live.py                  # 실시간 UI 데모용 실행 파일 (미완성)
 ├─ requirements.txt
 └─ README.md
 
