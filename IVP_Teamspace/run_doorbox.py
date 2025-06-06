@@ -3,54 +3,87 @@ run_doorbox.py
 DoorBox 프로젝트 전체 인퍼런스 실행 파일
 """
 
+import cv2
 import kp
-import time
+from datetime import datetime
 
 from inference.1_yolov5_face_detect import detect_faces
 from inference.2_cropper import crop_faces
 from inference.3_emotion_infer import infer_emotion
 from inference.4_gender_age_infer import infer_gender_age
 from inference.5_result_packager import save_result
-from inference.6_slack_trigger import send_slack_notification
+from UI.slack_UI import process_detection
 
 MODEL_ID_YOLO = 22222
 MODEL_ID_EMOTION = 11111
 
-def main():
-    print("📦 DoorBox 인퍼런스 시작")
 
-    # 1. CatchCAM 연결 및 초기화
-    device_group = kp.core.connect_devices()[0]
-    kp.device.set_timeout(device_group, 10000)
+def draw_result(frame, bbox, result_dict):
+    x1, y1, x2, y2 = bbox
+    label = f"{result_dict['emotion']} / {result_dict['gender']} / {result_dict['age']}"
+    color = (0, 255, 0)
+    cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+    cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, color, 2)
+
+
+def process_frame(frame, device_group):
+    try:
+        # 1. YOLO 얼굴 검출
+        _, boxes = detect_faces(device_group, MODEL_ID_YOLO, frame)
+        if not boxes:
+            print("[WARNING] 얼굴이 감지되지 않았습니다.")
+            return frame
+
+        # 2. Crop & 분류
+        cropped_faces = crop_faces(frame, boxes)
+        face_img, path = cropped_faces[0]
+        emotion = infer_emotion(device_group, MODEL_ID_EMOTION, face_img)
+        gender, age = infer_gender_age(path)
+
+        # 3. 결과 저장 + Slack 알림
+        result = {"emotion": emotion, "gender": gender, "age": age}
+        save_result(result)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
+        process_detection(now, emotion, gender, age)
+
+        # 4. 시각화
+        draw_result(frame, boxes[0], result)
+        return frame
+
+    except Exception as e:
+        print(f"[ERROR] 처리 실패: {e}")
+        return frame
+
+
+def main():
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("[ERROR] 웹캠 열기 실패")
+        return
+
+    print("[INFO] DoorBox 실시간 인퍼런스 시작 (q: 종료)")
 
     try:
-        print("[1단계] YOLO 얼굴 검출...")
-        frame, boxes = detect_faces(device_group, MODEL_ID_YOLO)
+        device_group = kp.core.connect_devices()[0]
+        kp.device.set_timeout(device_group, 10000)
 
-        if not boxes:
-            print("[종료] 얼굴이 감지되지 않았습니다.")
-            return
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-        print(f"[2단계] 얼굴 Crop 진행... (총 {len(boxes)}개)")
-        cropped_faces = crop_faces(frame, boxes)
+            frame = process_frame(frame, device_group)
+            cv2.imshow("DoorBox", frame)
 
-        for face_img, path in cropped_faces:
-            print(f"[3단계] 감정 분류 중... ({path})")
-            emotion = infer_emotion(device_group, MODEL_ID_EMOTION, face_img)
-
-            print("[4단계] 성별/연령대 분류 중...")
-            gender, age = infer_gender_age(path)
-
-            print("[5단계] 결과 저장 중...")
-            result_path = save_result(emotion, gender, age)
-
-            print("[6단계] Slack 알림 전송 중...")
-            send_slack_notification()
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
     finally:
-        print("[마무리] 디바이스 연결 해제 중...")
+        cap.release()
+        cv2.destroyAllWindows()
         kp.core.disconnect_devices()
-        print("✅ DoorBox 인퍼런스 종료")
+        print("[INFO] 종료됨")
+
 
 if __name__ == "__main__":
     main()

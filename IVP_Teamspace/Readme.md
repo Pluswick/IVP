@@ -20,42 +20,40 @@
 
 ```jsx
 DoorBox_Project/
-├─ models/
-│   └─ nef/
-│       └─ combined.nef    # Yolov5s + MobileNetV2 컴바인 모델.nef
-│   └─ pth/
-│       ├─ mobilenetv3_age.pth
-│       └─ mobilenetv3_gender.pth
+├── models/
+│   ├── nef/
+│   │   └── combined.nef              # YOLOv5s + MobileNetV2 결합 모델
+│   └── pth/
+│       ├── mobilenetv3_age.pth       # 연령대 분류 모델
+│       └── mobilenetv3_gender.pth    # 성별 분류 모델
 
-├─ config/
-│   ├─ emotion_labels.json              # 감정 softmax 매핑
-│   ├─ slack_config.py                  # Webhook URL 등
-│   └─ gender_age_labels.json           # 성별/연령 매핑 (선택)
+├── inference/                        
+│   ├── 1_yolov5_face_detect.py            # 얼굴 검출 (NPU)
+│   ├── 2_cropper.py                       # 얼굴 crop 이미지 저장
+│   ├── 3_emotion_infer.py                 # 감정 분류 (NPU)
+│   ├── 4_gender_age_infer.py              # 성별/연령대 분류 (CPU)
+│   ├── 5_result_packager.py               # 감정+성별+연령 결과 저장
+│   └── run_inference.py              # 전체 인퍼런스 흐름 통합 (UI 없음)
 
-├─ inference/                           # 인퍼런스 관련 코드들
-│   ├─ run_inference.py                 # 메인 인퍼런스 파이프라인
-│   ├─ 1_yolov5_face_detect.py            # 얼굴 검출 (NPU)
-│   ├─ 2_cropper.py                       # 얼굴 crop
-│   ├─ 3_emotion_infer.py                 # 감정 분류 (NPU)
-│   ├─ 4_gender_age_infer.py              # 성별/연령 분류 (CPU)
-│   ├─ 5_result_packager.py               # 감정+성별+연령 → result.json 저장
-│   └─ 6_slack_trigger.py                 # result.json → Slack 전송
+├── UI/                              
+│   ├── slack_URL.py                  # Webhook URL 정의
+│   └── slack_UI.py                   # Slack 메시지 포맷 + 전송 함수
 
-├─ outputs/
-│   ├─ faces/                           # crop 저장
-│   ├─ clips/                           # 5초 영상 저장
-│   ├─ logs/                            # log 텍스트
-│   └─ result.json                      # Slack 전송용 정보 저장 (최종)
+├── outputs/                          # 출력 결과 저장
+│   ├── faces/                          # crop된 얼굴 이미지
+│   ├── clips/                          # 5초 영상 클립
+│   ├── logs/                           # 로그 텍스트
+│   └── result.json                     # Slack 전송용 결과 파일
 
-├─ res/
-│   └─ firmware/
-│       └─ KL630/
-│           └─ kp_firmware.tar
+├── res/
+│   └── firmware/
+│       └── KL630/
+│           └── kp_firmware.tar       # CatchCAM용 펌웨어 파일
 
-├─ run_doorbox.py                       # 실제 실행하는 통합 진입 파일
-├─ run_doorbox_live.py                  # 실시간 UI 데모용 실행 파일 (미완성)
-├─ requirements.txt
-└─ README.md
+├── run_doorbox.py                   # 통합 실행 파일 (UI 없음)
+├── run_doorbox_live.py              # 실시간 UI 데모용 실행 파일
+├── requirements.txt
+└── README.md
 
 ```
 

@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Output logs and result files
+outputs/
+*.log
+*.json
+
+# Slack URL (외부 공유 X)
+UI/slack_URL.py
+
+# Environment files
+.env
+*.env
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
