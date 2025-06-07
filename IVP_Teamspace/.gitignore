@@ -11,6 +11,9 @@ outputs/
 # Slack URL (외부 공유 X)
 UI/slack_URL.py
 
+# CatchCAM 파일
+CatchCAM/
+
 # Environment files
 .env
 *.env

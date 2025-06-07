@@ -1,5 +1,5 @@
 from slack_sdk.webhook import WebhookClient
-from config.slack_config import SLACK_WEBHOOK_URL
+from slack_URL import SLACK_WEBHOOK_URL
 
 # Webhook 클라이언트 생성
 webhook = WebhookClient(SLACK_WEBHOOK_URL)
