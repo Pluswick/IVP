@@ -51,7 +51,7 @@ GENDER_MODEL_PATH = "D:/IVP_git/IVP/IVP_Teamspace/models/pth/mobilenetv3_gender.
 # 클래스 목록
 AGE_CLASSES    = ["Under 9","10s","20s","30s","40s","50s","60s","Over 70s"]
 GENDER_CLASSES = ["Male","Female"]
-EMOTIONS       = ["neutral","happiness","surprise","sadness","anger","disgust","fear","contempt"]
+EMOTIONS       = ["anger", "contempt", "disgust", "fear", "happiness", "neutral", "sadness", "surprise"]
 
 # 출력 폴더
 CAPTURE_SAVE_DIR = "D:/IVP_git/IVP/IVP_Teamspace/outputs/capture"
