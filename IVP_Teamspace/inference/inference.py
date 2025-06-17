@@ -281,6 +281,6 @@ if __name__ == '__main__':
 
     if last_emotion is not None:
         save_result(last_emotion, last_gender, last_age)
-        process_detection(datetime.now().strftime("%H:%M"),
+        process_detection(datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                             last_emotion, last_gender, last_age)
         print("[정보] 마지막 결과 저장 및 Slack 전송 완료")
