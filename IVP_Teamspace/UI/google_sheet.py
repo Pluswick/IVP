@@ -16,4 +16,3 @@ def log_to_google_sheet(time, emotion, gender, age, warning_prefix):
         print(f"[Google Sheets] 기록 완료: {row}")
     except Exception as e:
         print(f"[Google Sheets] 기록 실패: {e}")
-
