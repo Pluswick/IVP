@@ -30,7 +30,7 @@ from utils.ExamplePostProcess import post_process_yolo_v5
 
 # Slack UI
 sys.path.append("D:/IVP_git/IVP/IVP_Teamspace/UI")
-from slack_UI import process_detection
+from slack_UI_update import process_detection
 
 # --- 모델/경로 상수 -----------------------------------------------------------
 MODEL_ID_YOLO    = 32769

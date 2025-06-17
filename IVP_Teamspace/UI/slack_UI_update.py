@@ -1,5 +1,5 @@
-from sh_slack_api import send_slack_message  # 당신의 기존 Slack API 코드 import
-from sheet_module import log_to_google_sheet
+from slack_UI import send_slack_message 
+from google_sheet import log_to_google_sheet
 from datetime import datetime
 
 def process_detection(time, emotion, gender, age):

@@ -1,9 +1,11 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import os
 
 # 구글 인증 설정
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+cred_path = os.path.join(os.path.dirname(__file__), "credentials.json")
+creds = ServiceAccountCredentials.from_json_keyfile_name(cred_path, scope)
 client = gspread.authorize(creds)
 worksheet = client.open("CatchCrime_방문기록").worksheet("감지기록")
 
