@@ -1,4 +1,4 @@
-from sh_slack_api import send_slack_message  # 당신의 기존 Slack API 코드 import
+from sh_slack_api import send_slack_message  #기존 Slack API 코드 import
 from sheet_module import log_to_google_sheet
 from datetime import datetime
 
@@ -6,7 +6,6 @@ def process_detection(time, emotion, gender, age):
     danger_emotions = {"anger", "fear"}
     warning_prefix = "(주의)" if emotion.lower() in danger_emotions else ""
 
-    # Slack 메시지 조립
     msg = (
         f"[Door-Box] {warning_prefix}방문자가 인식되었습니다.\n"
         f"- 시각: {time}\n"
